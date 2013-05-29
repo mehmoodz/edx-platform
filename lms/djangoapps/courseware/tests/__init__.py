@@ -26,26 +26,28 @@ class BaseTestXmodule(ModuleStoreTestCase):
 
     This class prepares course and users for tests:
         1. create test course;
-        2. create, enrol and login users for this course;
+        2. create, enroll and login users for this course;
 
     Any xmodule should overwrite only next parameters for test:
         1. TEMPLATE_NAME
         2. DATA
         3. MODEL_DATA
+        4. COURSE_DATA and USER_COUNT if needed
 
     This class should not contain any tests, because TEMPLATE_NAME
     should be defined in child class.
     """
     USER_COUNT = 2
+    COURSE_DATA = {}
 
     # Data from YAML common/lib/xmodule/xmodule/templates/NAME/default.yaml
     TEMPLATE_NAME = ""
-    DATA = ''
+    DATA = {}
     MODEL_DATA = {'data': '<some_module></some_module>'}
 
     def setUp(self):
 
-        self.course = CourseFactory.create()
+        self.course = CourseFactory.create(data=self.COURSE_DATA)
 
         # Turn off cache.
         modulestore().request_cache = None
@@ -96,7 +98,7 @@ class BaseTestXmodule(ModuleStoreTestCase):
         self.assertTrue(all(self.login_statuses))
 
     def get_url(self, dispatch):
-        """Return item url with dispatch."""
+        """Return word cloud url with dispatch."""
         return reverse(
             'modx_dispatch',
             args=(self.course.id, self.item_url, dispatch)
