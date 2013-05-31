@@ -12,7 +12,7 @@ from xmodule.tests import get_test_system
 from xmodule.videoalpha_module import VideoAlphaDescriptor
 
 
-class PostData:
+class PostData(object):
     """Class which emulate postdata."""
     def __init__(self, dict_data):
         self.dict_data = dict_data
