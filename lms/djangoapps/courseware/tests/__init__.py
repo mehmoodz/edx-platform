@@ -42,7 +42,7 @@ class BaseTestXmodule(ModuleStoreTestCase):
 
     # Data from YAML common/lib/xmodule/xmodule/templates/NAME/default.yaml
     TEMPLATE_NAME = ""
-    DATA = {}
+    DATA = ''
     MODEL_DATA = {'data': '<some_module></some_module>'}
 
     def setUp(self):
@@ -98,7 +98,7 @@ class BaseTestXmodule(ModuleStoreTestCase):
         self.assertTrue(all(self.login_statuses))
 
     def get_url(self, dispatch):
-        """Return word cloud url with dispatch."""
+        """Return item url with dispatch."""
         return reverse(
             'modx_dispatch',
             args=(self.course.id, self.item_url, dispatch)
