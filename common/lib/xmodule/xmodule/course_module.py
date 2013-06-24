@@ -367,8 +367,6 @@ class CourseFields(object):
 class CourseDescriptor(CourseFields, SequenceDescriptor):
     module_class = SequenceModule
 
-    template_dir_name = 'course'
-
     def __init__(self, *args, **kwargs):
         """
         Expects the same arguments as XModuleDescriptor.__init__
