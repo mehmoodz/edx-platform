@@ -541,6 +541,16 @@ class CapaModule(CapaFields, XModule):
             'ungraded_response': self.handle_ungraded_response
         }
 
+        generic_error_message = (
+            "We're sorry, there was an error with processing your request. "
+            "Please try reloading your page and trying again."
+        )
+
+        not_found_error_message = (
+            "The state of this problem has changed since you loaded this page. "
+            "Please refresh your page."
+        )
+
         if dispatch not in handlers:
             return 'Error'
 
@@ -548,9 +558,16 @@ class CapaModule(CapaFields, XModule):
 
         try:
             result = handlers[dispatch](data)
-        except Exception as err:
+
+        except NotFoundError as err:
+            err_msg = not_found_error_message
             _, _, traceback_obj = sys.exc_info()
-            raise ProcessingError(err.message, traceback_obj)
+            raise ProcessingError, (err_msg, err), traceback_obj
+
+        except Exception as err:
+            err_msg = generic_error_message
+            _, _, traceback_obj = sys.exc_info()
+            raise ProcessingError, (err_msg, err), traceback_obj
 
         after = self.get_progress()
 

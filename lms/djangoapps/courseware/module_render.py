@@ -509,11 +509,11 @@ def modx_dispatch(request, dispatch, location, course_id):
         log.exception("Module indicating to user that request doesn't exist")
         raise Http404
 
-    # For XModule-specific errors, we respond with 400
-    except ProcessingError:
-        log.warning("Module encountered an error while prcessing AJAX call",
+    # For XModule-specific errors, we log the error and respond with an error message
+    except ProcessingError as err:
+        log.warning("Module encountered an error while processing AJAX call",
                     exc_info=True)
-        return HttpResponseBadRequest()
+        return HttpResponse(json.dumps({'success': err.args[0]}))
 
     # If any other error occurred, re-raise it to trigger a 500 response
     except:
