@@ -55,6 +55,9 @@ class XModuleCourseFactory(Factory):
         for k, v in kwargs.iteritems():
             setattr(new_course, k, v)
 
+        # Save the data we've just created before we update mongo datastore
+        new_course.save()
+
         # Update the data in the mongo datastore
         store.update_metadata(new_course.location, own_metadata(new_course))
         store.update_item(new_course.location, new_course._model_data._kvs._data)
