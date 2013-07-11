@@ -191,7 +191,7 @@ class ModuleStoreTestCase(TestCase):
         """
         if not 200 <= status_code < 300:
             msg = self._formatMessage(msg, "%s is not a success status" % safe_repr(status_code))
-            raise self.failureExecption(msg)
+            raise self.fail(msg)
 
     def assert3XX(self, status_code, msg=None):
         """
@@ -199,7 +199,7 @@ class ModuleStoreTestCase(TestCase):
         """
         if not 300 <= status_code < 400:
             msg = self._formatMessage(msg, "%s is not a redirection status" % safe_repr(status_code))
-            raise self.failureExecption(msg)
+            raise self.fail(msg)
 
     def assert4XX(self, status_code, msg=None):
         """
@@ -207,7 +207,7 @@ class ModuleStoreTestCase(TestCase):
         """
         if not 400 <= status_code < 500:
             msg = self._formatMessage(msg, "%s is not a client error status" % safe_repr(status_code))
-            raise self.failureExecption(msg)
+            raise self.fail(msg)
 
     def assert5XX(self, status_code, msg=None):
         """
@@ -215,4 +215,4 @@ class ModuleStoreTestCase(TestCase):
         """
         if not 500 <= status_code < 600:
             msg = self._formatMessage(msg, "%s is not a server error status" % safe_repr(status_code))
-            raise self.failureExecption(msg)
+            raise self.fail(msg)
