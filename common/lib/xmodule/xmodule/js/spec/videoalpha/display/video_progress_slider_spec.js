@@ -166,7 +166,7 @@
       });
     });
 
-    //TODO Fails: Problem with 'test_name_of_the_subtitles'
+    //TODO Fails: Problem with data-sub
     describe('onSlide', function() {
       beforeEach(function() {
         loadFixtures('videoalpha_all.html');

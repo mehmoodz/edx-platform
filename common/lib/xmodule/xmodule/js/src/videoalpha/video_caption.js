@@ -43,6 +43,8 @@ function () {
         state.videoCaption.hideCaptions        = hideCaptions.bind(state);
         state.videoCaption.calculateOffset     = calculateOffset.bind(state);
         state.videoCaption.updatePlayTime      = updatePlayTime.bind(state);
+        //Added for tests --> JM
+        state.videoCaption.fetchCaption        = fetchCaption.bind(state);
     }
 
     // function renderElements(state)
