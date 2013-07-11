@@ -36,6 +36,8 @@ from student.models import unique_id_for_user
 from courseware.access import has_access
 from courseware.masquerade import setup_masquerade
 from courseware.model_data import LmsKeyValueStore, LmsUsage, ModelDataCache
+from xblock.runtime import KeyValueStore
+from xblock.core import Scope
 from courseware.models import StudentModule
 from util.sandboxing import can_execute_unsafe_code
 
@@ -286,16 +288,20 @@ def get_module_for_descriptor_internal(user, descriptor, model_data_cache, cours
         )
 
     def publish(event):
+        """ A function that allows XModules to publish events. This only supports grade changes right now """
         if event.get('event_name') != 'grade':
             return
 
-        student_module, created = StudentModule.objects.get_or_create(
-            course_id=course_id,
-            student=user,
-            module_type=descriptor.location.category,
-            module_state_key=descriptor.location.url(),
-            defaults={'state': '{}'},
+        usage = LmsUsage(descriptor.location, descriptor.location)
+        #construct the key for the module
+        key = KeyValueStore.Key(
+            scope=Scope.user_state,
+            student_id=user.id,
+            block_scope_id=usage.id,
+            field_name='grade'
         )
+
+        student_module = model_data_cache.find_or_create(key)
         student_module.grade = event.get('value')
         student_module.max_grade = event.get('max_value')
         student_module.save()
