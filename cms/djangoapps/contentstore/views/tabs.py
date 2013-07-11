@@ -76,6 +76,7 @@ def reorder_static_tabs(request):
 
     # OK, re-assemble the static tabs in the new order
     course.tabs = reordered_tabs
+    course.save()
     modulestore('direct').update_metadata(course.location, own_metadata(course))
     return HttpResponse()
 
