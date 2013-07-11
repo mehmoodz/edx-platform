@@ -142,6 +142,9 @@ class XModuleItemFactory(Factory):
         if display_name is not None:
             new_item.display_name = display_name
 
+        # before we update mongo, save any modifications
+        new_item.save()
+
         # Add additional metadata or override current metadata
         item_metadata = own_metadata(new_item)
         item_metadata.update(metadata)
