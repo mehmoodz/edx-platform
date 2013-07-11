@@ -39,6 +39,8 @@ console.log('3');
         state.videoProgressSlider.onStop         = onStop.bind(state);
         state.videoProgressSlider.updateTooltip  = updateTooltip.bind(state);
         state.videoProgressSlider.updatePlayTime = updatePlayTime.bind(state);
+        //Added for tests -- JM
+        state.videoProgressSlider.buildSlider = buildSlider.bind(state);
     }
 
     // function renderElements(state)
@@ -132,12 +134,15 @@ console.log('12');
         this.videoProgressSlider.handle.qtip('option', 'content.text', '' + Time.format(value));
     }
 
+    //Changed for tests -- JM: Check if it is the cause of Chrome Bug Valera noticed
     function updatePlayTime(params) {
 console.log('13');
         if ((this.videoProgressSlider.slider) && (!this.videoProgressSlider.frozen)) {
-            this.videoProgressSlider.slider
+            /*this.videoProgressSlider.slider
                 .slider('option', 'max', params.duration)
-                .slider('value', params.time);
+                .slider('value', params.time);*/
+            this.videoProgressSlider.slider.slider('option', 'max', params.duration);
+            this.videoProgressSlider.slider.slider('option', 'value', params.time);
         }
     }
 
