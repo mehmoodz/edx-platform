@@ -582,7 +582,7 @@ class CapaModule(CapaFields, XModule):
 
         return False
 
-    def is_completed(self):
+    def is_submitted(self):
         # used by conditional module
         return self.lcp.done
 
