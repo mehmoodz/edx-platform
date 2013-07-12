@@ -509,6 +509,7 @@ class OpenEndedModuleXmlTest(unittest.TestCase, DummyModulestore):
 
         #Try saving an answer
         module.handle_ajax("save_answer", {"student_answer": self.answer})
+        module.save()
         task_one_json = json.loads(module.task_states[0])
         self.assertEqual(task_one_json['child_history'][0]['answer'], self.answer)
 

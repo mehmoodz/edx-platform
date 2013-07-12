@@ -194,6 +194,7 @@ class ImportSystem(XMLParsingSystem, MakoDescriptorSystem):
             if hasattr(descriptor, 'children'):
                 for child in descriptor.get_children():
                     parent_tracker.add_parent(child.location, descriptor.location)
+            descriptor.save()
             return descriptor
 
         render_template = lambda: ''

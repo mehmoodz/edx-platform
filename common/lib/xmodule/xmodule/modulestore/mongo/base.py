@@ -625,6 +625,7 @@ class MongoModuleStore(ModuleStoreBase):
                     'url_slug': item.location.name
                 })
                 course.tabs = existing_tabs
+                course.save()
                 self.update_metadata(course.location, course._model_data._kvs._metadata)
 
         except pymongo.errors.DuplicateKeyError:
@@ -737,6 +738,7 @@ class MongoModuleStore(ModuleStoreBase):
                     tab['name'] = metadata.get('display_name')
                     break
             course.tabs = existing_tabs
+            course.save()
             self.update_metadata(course.location, own_metadata(course))
 
         self._update_single_item(location, {'metadata': metadata})
@@ -759,6 +761,7 @@ class MongoModuleStore(ModuleStoreBase):
             course = self.get_course_for_item(item.location)
             existing_tabs = course.tabs or []
             course.tabs = [tab for tab in existing_tabs if tab.get('url_slug') != location.name]
+            course.save()
             self.update_metadata(course.location, own_metadata(course))
 
         # Must include this to avoid the django debug toolbar (which defines the deprecated "safe=False")

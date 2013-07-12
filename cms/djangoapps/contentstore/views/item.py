@@ -91,6 +91,7 @@ def clone_item(request):
     if display_name is not None:
         new_item.display_name = display_name
 
+    new_item.save()
     get_modulestore(template).update_metadata(new_item.location.url(), own_metadata(new_item))
 
     if new_item.location.category not in DETACHED_CATEGORIES:
