@@ -477,7 +477,7 @@ class CapaModule(CapaFields, XModule):
 
         return html
 
-    def get_problem_html(self):
+    def get_problem_html(self, encapsulate=True):
         """
         Return html for the problem.  
 
@@ -517,6 +517,11 @@ class CapaModule(CapaFields, XModule):
                    }
 
         html = self.system.render_template('problem.html', context)
+
+        if encapsulate:
+            html = u'<div id="problem_{id}" class="problem" data-url="{ajax_url}">'.format(
+                id=self.location.html_id(), ajax_url=self.system.ajax_url
+            ) + html + "</div>"
 
         # now do the substitutions which are filesystem based, e.g. '/static/' prefixes
         return self.system.replace_urls(html)

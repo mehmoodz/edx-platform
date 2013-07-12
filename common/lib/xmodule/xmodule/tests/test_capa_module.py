@@ -1233,6 +1233,19 @@ class CapaModuleTest(unittest.TestCase):
             mock_log.exception.assert_called_once_with('Got bad progress')
             mock_log.reset_mock()
 
+    @patch('xmodule.capa_module.Progress')
+    def test_get_progress_calculate_progress_fraction(self, mock_progress):
+        """
+        Check that score and total are calculated correctly for the progress fraction.
+        """
+        module = CapaFactory.create()
+        module.get_progress()
+        mock_progress.assert_called_with(0,1)
+
+        other_module = CapaFactory.create(correct=True)
+        other_module.get_progress()
+        mock_progress.assert_called_with(1,1)
+
 
 class ComplexEncoderTest(unittest.TestCase):
     def test_default(self):
