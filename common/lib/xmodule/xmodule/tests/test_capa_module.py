@@ -1246,6 +1246,22 @@ class CapaModuleTest(unittest.TestCase):
         other_module.get_progress()
         mock_progress.assert_called_with(1,1)
 
+    def test_get_html(self):
+        """
+        Check that get_html() calls get_progress() with no arguments.
+        """
+        module = CapaFactory.create()
+        module.get_progress = Mock(wraps=module.get_progress)
+        module.get_html()
+        module.get_progress.assert_called_once_with()
+
+    def test_get_problem(self):
+        """
+        Check that get_problem() returns the expected dictionary.
+        """
+        module = CapaFactory.create()
+        self.assertEquals(module.get_problem("data"), {'html': module.get_problem_html()})
+
 
 class ComplexEncoderTest(unittest.TestCase):
     def test_default(self):
