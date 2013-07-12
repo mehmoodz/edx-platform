@@ -31,13 +31,11 @@
           expect(li.length).toBe(videoSpeedControl.speeds.length);
           $.each(li.toArray().reverse(), function(index, link) {
             expect($(link)).toHaveData('speed', videoSpeedControl.speeds[index]);
-            // TODO: Fails
             expect($(link).find('a').text()).toBe(videoSpeedControl.speeds[index] + 'x');
           });
         });
 
         it('bind to change video speed link', function() {
-          // TODO: Fails
           expect($('.video_speeds a')).toHandleWith('click', videoSpeedControl.changeVideoSpeed);
         });
       });
@@ -84,29 +82,26 @@
       beforeEach(function() {
         initialize();
         videoSpeedControl.setSpeed(1.0);
+        spyOn(videoPlayer, 'onSpeedChange').andCallThrough();
       });
 
       describe('when new speed is the same', function() {
         beforeEach(function() {
-          spyOnEvent(videoPlayer, 'onSpeedChange');
           $('li[data-speed="1.0"] a').click();
         });
         
         it('does not trigger speedChange event', function() {
-          expect('onSpeedChange').not.toHaveBeenTriggeredOn(videoPlayer);
+          expect(videoPlayer.onSpeedChange).not.toHaveBeenCalled();
         });
       });
       
       describe('when new speed is not the same', function() {
         beforeEach(function() {
-          spyOnEvent(videoPlayer, 'onSpeedChange');
           $('li[data-speed="0.75"] a').click();
         });
 
         it('trigger speedChange event', function() {
-          // TODO: Fails
-          expect('onSpeedChange').toHaveBeenTriggeredOn(videoPlayer);
-          // TODO: Fails
+          expect(videoPlayer.onSpeedChange).toHaveBeenCalled();
           expect(videoSpeedControl.currentSpeed).toEqual(0.75);
         });
       });
