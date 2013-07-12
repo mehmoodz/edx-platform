@@ -2,19 +2,22 @@
   describe('VideoSpeedControlAlpha', function() {
     var state, videoPlayer, videoControl, videoSpeedControl;
 
+    function initialize() {
+      loadFixtures('videoalpha_all.html');
+      state = new VideoAlpha('#example');
+      videoPlayer = state.videoPlayer;
+      videoControl = state.videoControl;
+      videoSpeedControl = state.videoSpeedControl;
+    }
+
     beforeEach(function() {
       window.onTouchBasedDevice = jasmine.createSpy('onTouchBasedDevice').andReturn(false);
-      //TODO: modify jasmine.stubVideoPlayerAlpha by incorporating the changes below
-      //jasmine.stubVideoPlayerAlpha(this);
     });
 
     describe('constructor', function() {
       describe('always', function() {
         beforeEach(function() {
-          loadFixtures('videoalpha_all.html');
-          state = new VideoAlpha('#example');
-          videoControl = state.videoControl;
-          videoSpeedControl = state.videoSpeedControl;
+          initialize();
         });
 
         it('add the video speed control to player', function() {
@@ -42,10 +45,7 @@
       describe('when running on touch based device', function() {
         beforeEach(function() {
           window.onTouchBasedDevice.andReturn(true);
-          loadFixtures('videoalpha_all.html');
-          state = new VideoAlpha('#example');
-          videoControl = state.videoControl;
-          videoSpeedControl = state.videoSpeedControl;
+          initialize();
         });
 
         it('open the speed toggle on click', function() {
@@ -58,10 +58,7 @@
       
       describe('when running on non-touch based device', function() {
         beforeEach(function() {
-          loadFixtures('videoalpha_all.html');
-          state = new VideoAlpha('#example');
-          videoControl = state.videoControl;
-          videoSpeedControl = state.videoSpeedControl;
+          initialize();
         });
 
         it('open the speed toggle on hover', function() {
@@ -85,13 +82,8 @@
 
     describe('changeVideoSpeed', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoPlayer = state.videoPlayer;
-        videoControl = state.videoControl;
-        videoSpeedControl = state.videoSpeedControl;
+        initialize();
         videoSpeedControl.setSpeed(1.0);
-        //this.video.setSpeed('1.0');
       });
 
       describe('when new speed is the same', function() {
@@ -122,10 +114,7 @@
     
     describe('onSpeedChange', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoControl = state.videoControl;
-        videoSpeedControl = state.videoSpeedControl;
+        initialize();
         $('li[data-speed="1.0"] a').addClass('active');
         videoSpeedControl.setSpeed(0.75);
       });

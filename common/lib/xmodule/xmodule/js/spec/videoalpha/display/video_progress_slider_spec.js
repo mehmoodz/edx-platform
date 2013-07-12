@@ -2,20 +2,22 @@
   describe('VideoProgressSliderAlpha', function() {
     var state, videoPlayer, videoProgressSlider;
 
+    function initialize() {
+      loadFixtures('videoalpha_all.html');
+      state = new VideoAlpha('#example');
+      videoPlayer = state.videoPlayer;
+      videoProgressSlider = state.videoProgressSlider;
+    }
+
     beforeEach(function() {
       window.onTouchBasedDevice = jasmine.createSpy('onTouchBasedDevice').andReturn(false);
-      //TODO: modify jasmine.stubVideoPlayerAlpha by incorporating the changes below
-      //jasmine.stubVideoPlayerAlpha(this);
     });
 
     describe('constructor', function() {
       describe('on a non-touch based device', function() {
         beforeEach(function() {
           spyOn($.fn, 'slider').andCallThrough();
-          loadFixtures('videoalpha_all.html');
-          state = new VideoAlpha('#example');
-          videoPlayer = state.videoPlayer;
-          videoProgressSlider = state.videoProgressSlider;
+          initialize();
         });
 
         it('build the slider', function() {
@@ -52,10 +54,7 @@
         beforeEach(function() {
           window.onTouchBasedDevice.andReturn(true);
           spyOn($.fn, 'slider').andCallThrough();
-          loadFixtures('videoalpha_all.html');
-          state = new VideoAlpha('#example');
-          videoPlayer = state.videoPlayer;
-          videoProgressSlider = state.videoProgressSlider;
+          initialize();
         });
 
         it('does not build the slider', function() {
@@ -68,10 +67,7 @@
 
     describe('play', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoPlayer = state.videoPlayer;
-        videoProgressSlider = state.videoProgressSlider;
+        initialize();
       });
 
       describe('when the slider was already built', function() {
@@ -131,10 +127,7 @@
 
     describe('updatePlayTime', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoPlayer = state.videoPlayer;
-        videoProgressSlider = state.videoProgressSlider;
+        initialize();
       });
 
       describe('when frozen', function() {
@@ -169,10 +162,7 @@
     //TODO Fails: Problem with data-sub
     describe('onSlide', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoPlayer = state.videoPlayer;
-        videoProgressSlider = state.videoProgressSlider;
+        initialize();
         spyOn($.fn, 'slider').andCallThrough();
         spyOnEvent(videoPlayer, 'onSlideSeek');
         videoProgressSlider.onSlide({}, {
@@ -193,13 +183,11 @@
         expect(videoPlayer.currentTime).toEqual(20);
       });
     });
+    //End Fails
 
     describe('onChange', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoPlayer = state.videoPlayer;
-        videoProgressSlider = state.videoProgressSlider;
+        initialize();
         spyOn($.fn, 'slider').andCallThrough();
         videoProgressSlider.onChange({}, {
           value: 20
@@ -210,12 +198,10 @@
       });
     });
 
+    //TODO Fails: Problem with data-sub
     describe('onStop', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoPlayer = state.videoPlayer;
-        videoProgressSlider = state.videoProgressSlider;
+        initialize();
         spyOnEvent(videoPlayer, 'onSlideSeek');
         videoProgressSlider.onStop({}, {
           value: 20
@@ -237,13 +223,11 @@
         expect(videoProgressSlider.frozen).toBeFalsy();
       });
     });
+    //End Fails
     
     describe('updateTooltip', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoPlayer = state.videoPlayer;
-        videoProgressSlider = state.videoProgressSlider;
+        initialize();
         spyOn($.fn, 'slider').andCallThrough();
         videoProgressSlider.updateTooltip(90);
       });

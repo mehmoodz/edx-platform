@@ -2,15 +2,17 @@
   describe('VideoVolumeControlAlpha', function() {
     var state, videoControl, videoVolumeControl;
 
+    function initialize() {
+      loadFixtures('videoalpha_all.html');
+      state = new VideoAlpha('#example');
+      videoControl = state.videoControl;
+      videoVolumeControl = state.videoVolumeControl;
+    }
+
     describe('constructor', function() {
       beforeEach(function() {
         spyOn($.fn, 'slider').andCallThrough();
-        //TODO: modify jasmine.stubVideoPlayerAlpha by incorporating the changes below
-        //state = jasmine.stubVideoPlayerAlpha(this);
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoControl = state.videoControl;
-        videoVolumeControl = state.videoVolumeControl;
+        initialize();
       });
 
       it('initialize currentVolume to 100', function() {
@@ -46,10 +48,7 @@
 
     describe('onChange', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoControl = state.videoControl;
-        videoVolumeControl = state.videoVolumeControl;
+        initialize();
       });
 
       describe('when the new volume is more than 0', function() {
@@ -87,10 +86,7 @@
     
     describe('toggleMute', function() {
       beforeEach(function() {
-        loadFixtures('videoalpha_all.html');
-        state = new VideoAlpha('#example');
-        videoControl = state.videoControl;
-        videoVolumeControl = state.videoVolumeControl;
+        initialize();
       });
 
       describe('when the current volume is more than 0', function() {
