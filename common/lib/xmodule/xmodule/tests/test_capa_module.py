@@ -1239,10 +1239,12 @@ class CapaModuleTest(unittest.TestCase):
         Check that score and total are calculated correctly for the progress fraction.
         """
         module = CapaFactory.create()
+        module.weight = 1
         module.get_progress()
         mock_progress.assert_called_with(0,1)
 
         other_module = CapaFactory.create(correct=True)
+        other_module.weight = 1
         other_module.get_progress()
         mock_progress.assert_called_with(1,1)
 
