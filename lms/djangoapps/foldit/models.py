@@ -37,11 +37,7 @@ class Score(models.Model):
         return (-score) * 10 + 8000 * sum_of
 
     @staticmethod
-    def get_tops_n(
-        n,
-        puzzles=['994559'],
-        course_list=[],
-    ):
+    def get_tops_n(n, puzzles=['994559'], course_list=[]):
         """
         Arguments:
             puzzles: a list of puzzle ids that we will use. If not specified,
@@ -51,8 +47,8 @@ class Score(models.Model):
 
         Returns:
             The top n sum of scores for puzzles in <puzzles>,
-            filtered by course. If no courses are specified we default
-            to all courses. Output is a list
+            filtered by course. If no courses is specified we default
+            the pool of students to all courses. Output is a list
             of dictionaries, sorted by display_score:
                 [ {username: 'a_user',
                    score: 12000} ...]
