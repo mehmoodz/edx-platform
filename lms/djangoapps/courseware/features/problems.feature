@@ -119,3 +119,13 @@ Feature: Answer problems
         When I press the button with the label "Hide Answer(s)"
         Then the button with the label "Show Answer(s)" does appear
         And I should not see "4.14159" anywhere on the page
+
+    Scenario: I can see my score on a problem I answer correctly
+        Given I am viewing a "numerical" problem
+        When I answer a "numerical" problem "correctly"
+        Then I should see a score of "1/1 points"
+
+    Scenario: I can see my score on a problem I answer incorrectly
+        Given I am viewing a "numerical" problem
+        When I answer a "numerical" problem "incorrectly"
+        Then I should see a score of "1 point possible"
