@@ -30,7 +30,7 @@ class Command(NoArgsCommand):
         ),
     )
 
-    def handle(self, *args, **options):
+    def handle_noargs(self, **options):
         smhc = StudentModuleHistoryCleaner(
             dry_run=options["dry_run"],
             verbosity=int(options["verbosity"]),
@@ -49,6 +49,31 @@ class StudentModuleHistoryCleaner(object):
 
     def main(self):
         print self.dry_run
+        self.say("Hello!")
+        print connection.is_managed()
+
+    def say(self, msg):
+        print msg
+
+    def get_history_for_student_modules(self, student_module_id):
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT id, created FROM courseware_studentmodulehistory
+            WHERE student_module_id = %s
+            ORDER BY created
+            """,
+            [student_module_id]
+        )
+        history = cursor.fetchall()
+        return history
+
+    def delete_history(self, ids_to_delete):
+        cursor = connection.cursor()
+        cursor.execute("""
+            DELETE FROM courseware_studentmodulehistory
+            WHERE id IN ({ids})
+            """.format(ids=",".join(str(i) for i in ids_to_delete))
+        )
 
     def clean_one_student_module(self, student_module_id):
         """Clean one StudentModule's-worth of history.
@@ -58,43 +83,30 @@ class StudentModuleHistoryCleaner(object):
         """
         delete_gap = datetime.timedelta(seconds=self.DELETE_GAP_SECS)
 
-        cursor = connection.cursor()
-        cursor.execute("""
-            select id, created from courseware_studentmodulehistory
-            where student_module_id = %s
-            order by created
-            """,
-            [student_module_id]
-        )
-        history = cursor.fetchall()
-
+        history = self.get_history_for_student_modules(student_module_id)
         if not history:
-            print "No history for student_module_id {}".format(student_module_id)
+            self.say("No history for student_module_id {}".format(student_module_id))
             return
 
         ids_to_delete = []
         next_created = None
-        for id, created in reversed(history):
+        for history_id, created in reversed(history):
             if next_created is not None:
                 # Compare this timestamp with the next one.
                 if (next_created - created) < delete_gap:
                     # This row is followed closely by another, we can discard
                     # this one.
-                    ids_to_delete.append(id)
+                    ids_to_delete.append(history_id)
 
             next_created = created
 
         verb = "Would have deleted" if self.dry_run else "Deleting"
-        print "{verb} {to_delete} rows of {total} for student_module_id {id}".format(
+        self.say("{verb} {to_delete} rows of {total} for student_module_id {id}".format(
             verb=verb,
             to_delete=len(ids_to_delete),
             total=len(history),
             id=student_module_id,
-        )
+        ))
 
         if not self.dry_run:
-            cursor.execute("""
-                delete from courseware_studentmodulehistory
-                where id in ({ids})
-                """.format(ids=",".join(str(i) for i in ids_to_delete))
-            )
+            self.delete_history(ids_to_delete)
